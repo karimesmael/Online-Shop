@@ -1,0 +1,37 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    <style>
+        .profile-pic{
+            height: 200px;
+            width: 200px;
+        }
+        a{
+            text-decoration:none ;
+        }
+    </style>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <div class="profile-pic">
+            <img src="" alt="profilePicure">
+        </div>
+        <h1><%= profileUser.username %></h1>
+            <main>
+                <% if (prods.length > 0) { %>
+                    <div>   <h2>Products:</h2>
+                        <% for (let product of prods) { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                       <a href="/products/<%= product._id %>"><%= product.title %></a> 
+                                    </h1>
+                                </header>
+                            </article>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Products Found!</h1>
+                        <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>
