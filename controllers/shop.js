@@ -4,15 +4,13 @@ const Order = require("../models/order");
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
-const { title } = require("process");
-const stripe = require("stripe")(
-  "sk_test_51NJlWdH712dShb27aahhqFYMMGwNjs6Cesy9auaHAHyxciwqEBnlNHCxerlPwVEL57oenjIUGOfMfNT4cCPbxPr600Gs4dxSBK"
-);
-
-const ITEMS_PER_PAGE = 2;
+// const stripe = require("stripe")(
+//   "sk_test_51NJlWdH712dShb27aahhqFYMMGwNjs6Cesy9auaHAHyxciwqEBnlNHCxerlPwVEL57oenjIUGOfMfNT4cCPbxPr600Gs4dxSBK"
+// );
 
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
+  const ITEMS_PER_PAGE = 2;
   let totalItems = await Product.find().countDocuments();
 
   let products = await Product.find()
@@ -189,12 +187,6 @@ exports.getCheckout = async (req, res, next) => {
     totalSum: total,
   });
   req.user.clearCart();
-  // .catch((err) => {
-  //   console.log(err);
-  // const error = new Error(err);
-  // error.httpStatusCode = 500;
-  // next(error);
-  // });
 };
 
 exports.getIvoice = (req, res, next) => {
@@ -238,18 +230,7 @@ exports.getIvoice = (req, res, next) => {
       });
       pdfDoc.text("--------------------------------------");
       pdfDoc.fontSize(20).text(`Total Price = $${totalPrice}`);
-
       pdfDoc.end();
-      // fs.readFile(invoicePath, (err, data) => {
-      //   if (err) {
-      //     console.log(err);
-      //     return next();
-      //   }
-      //   res.send(data);
-      // });
-      // const file = fs.createReadStream(invoicePath);
-
-      // file.pipe(res);
     })
     .catch((err) => {
       const error = new Error(err);
