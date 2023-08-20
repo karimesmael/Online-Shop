@@ -19,32 +19,26 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
-  console.log(req.session);
-  const title = req.body.title;
-  const image = req.file;
-  const price = req.body.price;
-  const description = req.body.description;
-  try {
-    if (!image) {
-      return res.render("admin/edit-product", {
-        pageTitle: "Add Product",
-        path: "/admin/add-product",
-        editing: false,
-        user: req.user,
-        errMsg: "image should be png , jpg or jpeg",
-      });
-    }
-    imageUrl = image.path;
-
-    const product = new Product({
-      title: title,
-      price: price,
-      description: description,
-      imageUrl: imageUrl,
-      userId: req.user,
+  const { title, image, price, description } = req.body;
+  if (!image) {
+    return res.render("admin/edit-product", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      user: req.user,
+      errMsg: "image should be png , jpg or jpeg",
     });
+  }
+  imageUrl = image.path;
+  const product = new Product({
+    title: title,
+    price: price,
+    description: description,
+    imageUrl: imageUrl,
+    userId: req.user,
+  });
+  try {
     await product.save();
-
     res.redirect("/admin/products");
   } catch {
     const error = new Error("err");
@@ -81,11 +75,8 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  const updatedTitle = req.body.title;
-  const updatedPrice = req.body.price;
+  const { productId, title, price, description } = req.body;
   const image = req.file;
-  const updatedDesc = req.body.description;
   if (!image) {
     return res.render("admin/edit-product", {
       pageTitle: "Add Product",
@@ -96,14 +87,14 @@ exports.postEditProduct = (req, res, next) => {
     });
   }
 
-  Product.findById(prodId)
+  Product.findById(productId)
     .then((product) => {
       if (product.userId.toString() !== req.user._id.toString()) {
         return res.redirect("/");
       }
-      product.title = updatedTitle;
-      product.price = updatedPrice;
-      product.description = updatedDesc;
+      product.title = title;
+      product.price = price;
+      product.description = description;
       fileHelper.deleteFile(product.imageUrl);
       product.imageUrl = image.path;
 
