@@ -12,9 +12,6 @@ const multer = require("multer"); //for file uploading..
 const errorController = require("./controllers/error");
 const User = require("./models/user");
 
-const MONGODB_URI =
-  "mongodb+srv://karim:GSkHPKNMo64wzgb4@cluster0.fjr5qww.mongodb.net/shop";
-
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
