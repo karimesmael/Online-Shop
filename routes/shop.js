@@ -8,7 +8,8 @@ const router = express.Router();
 const isAuth = require("../middleware/is-auth");
 
 router.get("/", shopController.getIndex);
-router.use("/search", shopController.search);
+router.get("/search", shopController.search);
+router.get("/filter", shopController.filter);
 router.get("/products", shopController.getProducts);
 router.get("/products/:productId", shopController.getProduct);
 
@@ -20,7 +21,7 @@ router.post("/create-order", isAuth, shopController.postOrder);
 router.get("/orders", isAuth, shopController.getOrders);
 
 router.get("/orders/:orderId", isAuth, shopController.getIvoice);
-router.get("/checkout", isAuth, shopController.getCheckout);
+// router.get("/checkout", isAuth, shopController.getCheckout);
 
 // router.get("/checkout/success", isAuth, shopController.getCheckoutSuccess);
 

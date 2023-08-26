@@ -1,7 +1,10 @@
 <%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/css/product.css">
     <style>
         .profile-pic{
+            height: 200px;
+            width: 200px;
+        }
+        img {
             height: 200px;
             width: 200px;
         }
@@ -13,15 +16,15 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-        <div class="profile-pic">
-            <img src="" alt="profilePicure">
+        <main style="display: flex; align-items: center; flex-direction: column;">
+        <div  class="profile-pic">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profilePicure">
         </div>
         <h1><%= profileUser.username %></h1>
-            <main>
                 <% if (prods.length > 0) { %>
-                    <div>   <h2>Products:</h2>
+                    <div style="display: flex; align-items: center; flex-direction: column;" >   <h2>Products:</h2>
                         <% for (let product of prods) { %>
-                            <article class="card product-item">
+                            <article class=" product-item">
                                 <header class="card__header">
                                     <h1 class="product__title">
                                        <a href="/products/<%= product._id %>"><%= product.title %></a> 
@@ -30,8 +33,6 @@
                             </article>
                             <% } %>
                     </div>
-                    <% } else { %>
-                        <h1>No Products Found!</h1>
-                        <% } %>
+                    <% }  %>
             </main>
             <%- include('../includes/end.ejs') %>

@@ -1,0 +1,21 @@
+<div style="display: flex; justify-content: center; margin: 10px" >
+    <form action="/filter" id="filter-form">
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+        </select>
+        <label for="minPrice">min-price</label>
+        <input type="text" name="minPrice">
+        <label for="maxPrice">max-price</label>
+        <input type="text" name="maxPrice">
+        <button type="submit">Filter</button>
+    </form>
+</div>
+<div style="display: flex; justify-content: center; margin: 10px" >
+    <form action="/search" method="get">
+        <input type="text" placeholder="Search ..." name="searchTerm" style="width: 400px;height: 30px;">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    </form>
+</div>

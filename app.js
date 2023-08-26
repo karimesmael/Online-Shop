@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -102,6 +103,7 @@ app.use("/500", errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
+  console.log(error);
   res.status(500).render("500", {
     pageTitle: "Error happenned",
     path: "/500",
@@ -110,10 +112,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGODB_URI)
   .then((res) => {
     console.log(`Connected to database :)`);
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.log("Authentication failed to connect to database !!!!");

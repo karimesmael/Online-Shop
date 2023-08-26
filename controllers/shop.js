@@ -10,7 +10,7 @@ const PDFDocument = require("pdfkit");
 
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 3;
   let totalItems = await Product.find().countDocuments();
 
   let products = await Product.find()
@@ -51,6 +51,7 @@ exports.getProduct = async (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   const page = +req.query.page || 1;
+  const ITEMS_PER_PAGE = 3;
   let totalItems;
   Product.find()
     .countDocuments()
@@ -270,22 +271,41 @@ exports.getCheckoutSuccess = (req, res, next) => {
 };
 
 exports.search = async (req, res, next) => {
-  const title = req.query.title || req.body.title;
-  const page = +req.query.page || 1;
-  let totalItems = await Product.find().countDocuments();
-  const products = await Product.find({ title: title })
-    .skip((page - 1) * ITEMS_PER_PAGE)
-    .limit(ITEMS_PER_PAGE);
-  console.log(products);
-  res.render("shop/index", {
-    prods: products,
-    pageTitle: "All Products",
-    path: "/products",
-    currentPage: page,
-    hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-    hasPerviousPage: page > 1,
-    nextPage: page + 1,
-    previousPage: page - 1,
-    lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
-  });
+  const searchTerm = req.query.searchTerm;
+  try {
+    const products = await Product.find({ $text: { $search: searchTerm } });
+
+    res.render("shop/product-list", {
+      prods: products,
+      pageTitle: "All Products",
+      path: "",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+exports.filter = async (req, res, next) => {
+  const { category, minPrice, maxPrice } = req.query;
+  console.log(category === "");
+  let filters = {};
+  if (category !== "") {
+    filters.category = category;
+  }
+  if (minPrice && maxPrice) {
+    filters.price = { $gte: minPrice, $lte: maxPrice };
+  } else if (minPrice) {
+    filters.price = { $gte: minPrice };
+  } else if (maxPrice) {
+    filters.price = { $lte: maxPrice };
+  }
+  try {
+    const products = await Product.find(filters);
+    res.render("shop/product-list", {
+      prods: products,
+      pageTitle: "All Products",
+      path: "",
+    });
+  } catch (error) {
+    next(error);
+  }
 };
