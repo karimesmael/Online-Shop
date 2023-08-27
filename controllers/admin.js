@@ -3,19 +3,13 @@ const Product = require("../models/product");
 const fileHelper = require("../util/file");
 
 exports.getAddProduct = (req, res, next) => {
-  res
-    .render("admin/edit-product", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      user: req.user,
-      errMsg: "",
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      next(error);
-    });
+  res.render("admin/edit-product", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    user: req.user,
+    errMsg: "",
+  });
 };
 
 exports.postAddProduct = async (req, res, next) => {

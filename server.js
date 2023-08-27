@@ -11,10 +11,11 @@ const multer = require("multer"); //for file uploading..
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
-
+const MONGODB_URI =
+  "mongodb+srv://karim:GSkHPKNMo64wzgb4@cluster0.fjr5qww.mongodb.net/shop";
 const app = express();
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: MONGODB_URI,
   collection: "session",
 });
 const csrfProtection = csrf();
@@ -107,9 +108,15 @@ app.use((error, req, res, next) => {
     isAuthenticated: req.session.isLoggedIn,
   });
 });
-
+console.log("Connecting to MongoDB:", process.env.MONGODB_URI);
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(
+    "mongodb+srv://karim:GSkHPKNMo64wzgb4@cluster0.fjr5qww.mongodb.net/shop",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then((res) => {
     console.log(`Connected to database :)`);
     app.listen(process.env.PORT || 3000);
