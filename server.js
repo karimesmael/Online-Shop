@@ -116,4 +116,5 @@ mongoose
   })
   .catch((err) => {
     console.log("Authentication failed to connect to database !!!!");
+    console.log(err);
   });
