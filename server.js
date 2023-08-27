@@ -109,7 +109,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(`${process.env.MONGODB_URI}`)
   .then((res) => {
     console.log(`Connected to database :)`);
     app.listen(process.env.PORT || 3000);
