@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "first app",
   "main": "first-app.js",
-"engines": {
-  "node": "18.16.0"
-},
+  "engines": {
+    "node": "18.16.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "Karim Esmael",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "check": "^1.0.0",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
     "csurf": "^1.11.0",
@@ -27,8 +28,10 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.2",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.3",
     "nodemailer-sendgrid-transport": "^0.2.0",

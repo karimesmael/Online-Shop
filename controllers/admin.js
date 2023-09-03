@@ -13,7 +13,8 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
-  const { title, image, price, description } = req.body;
+  const { title, price, description, category } = req.body;
+  const image = req.file;
   if (!image) {
     return res.render("admin/edit-product", {
       pageTitle: "Add Product",
@@ -23,12 +24,13 @@ exports.postAddProduct = async (req, res, next) => {
       errMsg: "image should be png , jpg or jpeg",
     });
   }
-  imageUrl = image.path;
+  const imageUrl = image.path;
   const product = new Product({
     title: title,
     price: price,
     description: description,
     imageUrl: imageUrl,
+    category: category,
     userId: req.user,
   });
   try {
@@ -69,7 +71,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const { productId, title, price, description } = req.body;
+  const { productId, title, price, description, category } = req.body;
   const image = req.file;
   if (!image) {
     return res.render("admin/edit-product", {
@@ -89,6 +91,7 @@ exports.postEditProduct = (req, res, next) => {
       product.title = title;
       product.price = price;
       product.description = description;
+      product.category = category;
       fileHelper.deleteFile(product.imageUrl);
       product.imageUrl = image.path;
       return product.save().then((result) => {

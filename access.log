@@ -1,0 +1,4 @@
+GET / 200 - - 540.825 ms
+GET /css/main.css 304 - - 2.001 ms
+GET /css/product.css 304 - - 1.524 ms
+GET /js/main.js 304 - - 1.481 ms

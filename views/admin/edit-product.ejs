@@ -22,13 +22,22 @@
                 <label for="image">Image</label>
                 <input type="file" name="image" id="image">
             </div>
-            <!-- <div class="form-control">
-                <label for="imageUrl">Image URL</label>
-                <input type="text" name="imageUrl" id="imageUrl" value="<% if (editing) { %><%= product.imageUrl %><% } %>">
-            </div> -->
             <div class="form-control">
                 <label for="price">Price</label>
                 <input type="number" name="price" id="price" step="0.01" value="<% if (editing) { %><%= product.price %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                    <option value="">--</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="cars">Cars</option>
+                    <option value="electronics ">Electronics</option>
+                    <option value="books ">Books</option>
+                    <option value="Computer ">Computers</option>
+                    <option value="beauty">Beauty</option>
+                    <option value="home">Home</option>
+                </select>
             </div>
             <div class="form-control">
                 <label for="description">Description</label>

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -8,14 +9,16 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash"); // to flash user msg
 const multer = require("multer"); //for file uploading..
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
-const MONGODB_URI =
-  "mongodb+srv://karim:GSkHPKNMo64wzgb4@cluster0.fjr5qww.mongodb.net/shop";
+
 const app = express();
 const store = new MongoDBStore({
-  uri: MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: "session",
 });
 const csrfProtection = csrf();
@@ -48,6 +51,19 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+app.use(helmet());
+app.use(compression());
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms", {
+    stream: accessLogStream,
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -108,20 +124,17 @@ app.use((error, req, res, next) => {
     isAuthenticated: req.session.isLoggedIn,
   });
 });
-console.log("Connecting to MongoDB:", process.env.MONGODB_URI);
+console.log("Connecting to database...");
 mongoose
-  .connect(
-    "mongodb+srv://karim:GSkHPKNMo64wzgb4@cluster0.fjr5qww.mongodb.net/shop",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then((res) => {
     console.log(`Connected to database :)`);
     app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
-    console.log("Authentication failed to connect to database !!!!");
+    console.log("Error: failed to connect to database ");
     console.log(err);
   });

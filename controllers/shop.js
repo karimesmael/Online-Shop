@@ -285,10 +285,13 @@ exports.search = async (req, res, next) => {
   }
 };
 exports.filter = async (req, res, next) => {
-  const { category, minPrice, maxPrice } = req.query;
-  console.log(category === "");
+  const { category, minPrice, maxPrice, sort } = req.query;
   let filters = {};
-  if (category !== "") {
+  let sortedBy = "";
+  if (sort) {
+    sortedBy = sort;
+  }
+  if (category) {
     filters.category = category;
   }
   if (minPrice && maxPrice) {
@@ -299,7 +302,7 @@ exports.filter = async (req, res, next) => {
     filters.price = { $lte: maxPrice };
   }
   try {
-    const products = await Product.find(filters);
+    const products = await Product.find(filters).sort(sortedBy);
     res.render("shop/product-list", {
       prods: products,
       pageTitle: "All Products",
