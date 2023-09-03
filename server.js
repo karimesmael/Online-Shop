@@ -125,10 +125,13 @@ app.use((error, req, res, next) => {
   });
 });
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.fjr5qww.mongodb.net/shop`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then((res) => {
     app.listen(process.env.PORT || 3000);
   })
