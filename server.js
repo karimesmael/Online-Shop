@@ -124,17 +124,14 @@ app.use((error, req, res, next) => {
     isAuthenticated: req.session.isLoggedIn,
   });
 });
-console.log("Connecting to database...");
 mongoose
   .connect(`${process.env.MONGODB_URI}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then((res) => {
-    console.log(`Connected to database :)`);
     app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
-    console.log("Error: failed to connect to database ");
-    console.log(err);
+    console.log("err");
   });
