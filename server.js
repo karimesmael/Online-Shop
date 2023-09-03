@@ -18,7 +18,7 @@ const User = require("./models/user");
 
 const app = express();
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: `${process.env.MONGODB_URI}`,
   collection: "session",
 });
 const csrfProtection = csrf();
@@ -101,7 +101,7 @@ app.use((req, res, next) => {
     });
 });
 
-//this middleware to pass variables to evety renderMethod.
+//this middleware to pass variables to every renderMethod.
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
@@ -126,7 +126,7 @@ app.use((error, req, res, next) => {
 });
 console.log("Connecting to database...");
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(`${process.env.MONGODB_URI}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
